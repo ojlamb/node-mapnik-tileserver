@@ -12,6 +12,6 @@
     "mapnik": "3.6.2"
   },
   "scripts": {
-    "mapnik-example": "node mapnik-example.js"
+    "start": "node server.js"
   }
 }
