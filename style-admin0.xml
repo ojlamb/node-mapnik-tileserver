@@ -2,7 +2,7 @@
   <Style name="polygons">
     <Rule>
       <PolygonSymbolizer fill="#374C70" />
-      <LineSymbolizer stroke="#000" stroke-width="0.5" stroke-opacity="0.5" />
+      <LineSymbolizer stroke="#FFF" stroke-width="0.5" stroke-opacity="0.5" />
     </Rule>
   </Style>
   <Layer name="world" srs="+init=epsg:4326">

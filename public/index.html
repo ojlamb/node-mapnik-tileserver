@@ -1,44 +1,84 @@
-
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset='utf-8' />
+  <head>
+    <meta charset="utf-8" />
     <title>Add a WMS source</title>
-    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css' rel='stylesheet' />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <script src="https://libs.cartocdn.com/carto-vl/v1.4.4/carto-vl.min.js"></script>
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js"></script>
+    <link
+      href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://carto.com/developers/carto-vl/v1.4.4/examples/maps/style.css"
+      rel="stylesheet"
+    />
     <style>
-        body { margin:0; padding:0; }
-        #map { position:absolute; top:0; bottom:0; width:100%; }
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      const map = new mapboxgl.Map({
+        container: 'map',
+        style: carto.basemaps.voyager,
+        center: [-74.5447, 40.6892],
+        zoom: 8,
+      });
 
-<div id='map'></div>
-<script>
-mapboxgl.accessToken = 'pk.eyJ1Ijoib3dlbmxhbWIiLCJhIjoiY2lleWljcnF4MDBiOXQ0bHR0anRvamtucSJ9.t3YnHHqvQZ8Y0MTCNy0NNw';
-var map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/mapbox/light-v9',
-    zoom: 8,
-    center: [-74.5447, 40.6892]
-});
-map.on('load', function() {
+      const nav = new mapboxgl.NavigationControl({
+        showCompass: false,
+      });
+      map.addControl(nav, 'top-left');
+      map.addControl(new mapboxgl.FullscreenControl(), 'top-left');
 
-    map.addLayer({
-        'id': 'wms-test-layer',
-        'type': 'raster',
-        'source': {
-            'type': 'raster',
-            'tiles': [
-                "http://localhost:8888/admin0/{z}/{x}/{y}.png"
-            ],
-            'tileSize': 256
-        },
-        'paint': {}
-    }, 'aeroway-taxiway');
-});
-</script>
-
-</body>
+      // Define user
+      carto.setDefaultAuth({
+        username: 'cartovl',
+        apiKey: 'default_public',
+      });
+      map.on('load', function () {
+        map.addLayer(
+          {
+            id: 'countries-shp',
+            type: 'raster',
+            source: {
+              type: 'raster',
+              tiles: ['http://localhost:8888/admin0/{z}/{x}/{y}.png'],
+              tileSize: 256,
+            },
+            paint: {},
+          },
+          'aeroway-taxiway'
+        );
+        map.addLayer(
+          {
+            id: 'states-shp',
+            type: 'raster',
+            source: {
+              type: 'raster',
+              tiles: ['http://localhost:8888/admin1/{z}/{x}/{y}.png'],
+              tileSize: 256,
+            },
+            paint: {},
+          },
+          'aeroway-taxiway'
+        );
+      });
+    </script>
+  </body>
 </html>
